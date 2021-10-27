@@ -1,0 +1,321 @@
+radare2 -d 
+radare2 -A -w 
+
+
+
+
+
+V		[different view modes]
+p 		switch
+shift-p		switch back
+
+Enter 		go to the call
+u 		back from call
+
+shift+:		open comandline on the bottom
+
+s main 		go to the main function
+press enter to realod window
+
+
+axt		shwo you where is this call called
+axf 		show cros referencess
+afl		list all of the number
+afll		more deep descritipn
+
+
+
+
+
+
+
+RADARE2 Tutorial Static Analysis-----------------------------
+
+i?		get informations
+ii		show imports
+s 0x0000740	
+iE		Exports
+iS		Sessions
+is 		Symbols
+iz		strins in the data sections
+izz		more strings
+
+s 0x000012b2
+
+
+-----------RADARE2 Tutorial4 Getting Generla info about a Binary-----------------------------
+man rabin2
+rabin2 -I file
+stack canry 	usefull for securyty
+nx non executable stack security
+pic 	randomize load base addreses
+
+rabin2.exe -H 	version entry point address
+rabin2.exe -M 	main start address of main
+rabin2.exe -z 	dump string
+rabin2.exe -Z 	string countre
+rabin2.exe -zz	all string 
+
+---------------------------------
+rafin.exe	serach through binary file find bin patters and files
+-secrect key some what you can find as revershe engeneer
+-a 		only on memory address (16 bites)
+-s		specific string
+-S 		binary strin
+
+rafind2.exe -s printf letter_frequencies
+		libc
+
+
+
+export F=/bin/ls 	name of the binary file what you wanna to use
+for a in `rafind2 -s libc $F` ; do \
+	r2 -ns $a -gc'x 32' $F ; done
+
+run the binary send data give output in hex
+
+
+
+radare2 -nn file 	parce header
+V
+pf.			some comanad
+pf.elf_header @ elf_header
+
+
+
+-----------RADARE2 Tutorial5 Pathicng Binaries----------------------
+r2 -w file
+aaa
+
+SHIFT-A		set on top some box
+mov ebx, 3	it will cahgne machine code
+ENTER		set it
+
+w?		additional informations
+
+
+
+-----------RADARE2 Tutorial6 Dibbuging----------------------
+r2 -d file
+V go to the debuger view 
+you can see there stack
+e stack.size = 256	increase size of stack it's go of bites 16/32/126...
+F7		do step
+F8		step over
+		
+do 		restar program|reopen it
+
+[
+periode		go and set rip 	
+dsf		step frame (it will show you somethinh)
+]
+
+WHATCH this again because i had' not understand it properly
+
+
+
+-----------RADARE2 Tutorial 7 GRaph View Navigation Witing Comments--------------
+
+radare2 -A file
+-A 		analyze
+VV 		grapth view
+
+IF YOU WANNA TO MOVE PRESS THE RED LETTER WHAT ARE SOWN THERE
+
+j	jump
+k	back
+
+p		move between view mode
+shift-p		move back between view mode
+
+on the top you can see some afresses this are cross references
+
+
+-comments-
+(this is i think on linux)
+press :		write commnet
+press : and -	delete comment
+(windows press ? and write comment)
+or just press ; and write comment 
+press ; and - delete comment
+
+
+
+
+
+
+-----------RADARE2 Tutorial 8 Solving a CTF challenge--------------
+radare2 -AA file
+if it will take slow you can use 2.4  version now you soudl use 4._
+
+
+ia ~.. 			pipe it/tee
+
+GCC compiling with F flag it will be hardfer to decompile  than
+gcc file -s -o myfile 		strip out all assembly tybesl and stugg
+
+izz ~..
+UPX!		it's comprehesion format (binary ecevutable)
+		you can run it in copress file
+		some other files you must at first extract
+
+
+upx -d file
+i?
+ia ~..
+you can find exports there
+
+afl 		show functions list
+db main
+s main
+F9 		run until breakpoint
+
+pf S @ rbp-8 	print func string at rbp-8	you get momotety adrees of rbp-8 and decompyle it 
+afvd don't show it if we don't proprelly analyte it  (analyte function variavle display
+
+afvd [var_name]		show you command how to direferenc memory
+
+
+
+
+
+
+
+
+-----------RADARE2 Tutorial 9 Searching command output function adn entire file--------------
+
+afl 	show all functions
+afl~main 	search all adn find grep 	afl|grep main
+iS~.text	find ".text"
+pdf~call 	print disassembly functions 'call'
+search entire binary and find competari structures preparres or cmvs
+/ad/ cmp	all compestruction compare struction
+/ad/ cmp al 	show all where is all
+/ad/ xor ~..	you know
+/ad/ xor ~ah  	any "xor" with ah
+izz 		look for strings
+izz~[7]		some seven collum
+iS~[5]		show all permistion
+out it will show you the serten colum
+/ad/a add	
+/ad/a xor	
+
+
+
+
+
+
+
+
+
+
+--------------Radare2 Tutorial 10 - VISUAL PANEL mode!!!!---------------
+setup like olly dibug or some other
+
+r2 -d -AA file
+afl~main
+go  to visual mode press F9
+press shift-! 	it will show you a diffent view mode
+
+tab 	swich betweem windows
+shiwt "	change to other register 
+press - split horizontaly
+
+edit size
+press w
+press shift {h,j,k,l} 	you will see what it do
+change stack size: 	e stack.size = 512
+q	exit
+t 	new tab create new tab
+T 	create new tab from current panel
+t 	p[rev] n[ext]
+shift-x close panel
+
+Saving just normal stuff
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+afvd 			--- show what is in regitsr
+tp int var_8h    	--- convert it ot int
+aaa 			--  execute 
+pdf @main -- show assembly 
+db 0x21155151		-- set breakpoint
+dr 			-- show directories
+dc 			-- go to nearest breakpoint | continue
+ds 			-- step one command
+afl 			-- analyze code
+VV 			-- visual mode
+q 			-- quit
+e 			-- some info
+vV 			-- view mode
+[or possible start with (:)]
+d?			-- show all your d_ commands
+
+px @rax 		-- you can see a teble and it will show you a values
+ood test		-- add value to curent code what is run
+
+
+s nameofFucntion	-- 
+VV			-- view graph mode
+
+CHANGE CODE
+s 0x00400966
+wa jmp 0x0040096a
+
+GDB------
+gdb	
+p $al
+disassemble main
+set disassemly-flavor intel
+info proc map
+prccess mapa
+
+
+info functions
+disass function_name
+break *0x40070f
+run < payload
+x/48xw $rsp 	[show STACK POINTER]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
